@@ -89,28 +89,30 @@ async function draw() {
 
 	if ( !running ) mouseActions();
 	keyboardActions();
-	row = 0;
+		row = 0;
 	col = 0;
-	running = true;
-	for (let y = 0; y < width; y += cell_width) {
-		col = 0;
-		for (let x = 0; x < width; x += cell_width) {
-			if (boxes[row][col] == 1)
-			{
-				fill(ALIVE);
-				square(x, y, cell_width);
+	if ( !running )
+	{
+		for (let y = 0; y < width; y += cell_width) {
+			col = 0;
+			for (let x = 0; x < width; x += cell_width) {
+				if (boxes[row][col] == 1)
+				{
+					fill(ALIVE);
+					square(x, y, cell_width);
+				}
+				else
+				{
+					fill(DEAD);
+					square(x, y, cell_width);
+				}
+				col++;
 			}
-			else
-			{
-				fill(DEAD);
-				square(x, y, cell_width);
-			}
-			col++;
+			row++;
 		}
-		row++;
 	}
-	running = false;
-	await sleep(50)
+	
+
 }
 
 // Checking for any keyboard action
@@ -131,7 +133,7 @@ async function keyboardActions() {
 				let start = Date.now();
 				game_of_life();
 				let timeExec = Date.now() - start;
-				await sleep(500 - timeExec);
+				await sleep( 100 - timeExec);
 			}
 			running = false;
 		}
@@ -179,7 +181,7 @@ function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function game_of_life() {
+async function game_of_life() {
 	var temp = []
 	let row = 0;
 	let col = 0;
@@ -232,4 +234,27 @@ function game_of_life() {
 			boxes[i][j] = temp[i][j];
 		}
 	}
+	
+	row = 0;
+	col = 0;
+	running = true;
+	for (let y = 0; y < width; y += cell_width) {
+		col = 0;
+		for (let x = 0; x < width; x += cell_width) {
+			if (boxes[row][col] == 1)
+			{
+				fill(ALIVE);
+				square(x, y, cell_width);
+			}
+			else
+			{
+				fill(DEAD);
+				square(x, y, cell_width);
+			}
+			col++;
+		}
+		row++;
+	}
+	running = false;
+	await sleep(100)
 }
